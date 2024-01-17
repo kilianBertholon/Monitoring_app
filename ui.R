@@ -2,6 +2,7 @@
 library(shiny)
 library(shinydashboard)
 library(shinyjs)
+library(DT)
 
 ui <- dashboardPage(
   #Couleur de la page 
@@ -25,5 +26,9 @@ ui <- dashboardPage(
   dashboardBody(
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "style.css"
-  ))
+  )),
+  tabPanel("donnee",
+           fluidPage(
+             DTOutput("tableau_data")
+           ))
 ))
