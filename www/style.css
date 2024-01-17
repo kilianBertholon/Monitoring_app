@@ -9,3 +9,9 @@
   color: #000;
   font-size: 28px;
 }
+
+.main-sidebar {
+  font-size: 18px;
+  font-family: "Georgia";
+  transition: color 0.3s, font-size 0.3s;
+}

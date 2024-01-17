@@ -13,6 +13,7 @@ ui <- dashboardPage(
   
   #Paramètres de sidebar
   dashboardSidebar(
+    width = 350,
     sidebarMenu(
       menuItem("Analyse", tabName = "analyse", icon = icon("fa-sharp fa-solid fa-magnifying-glass-chart")),
       menuItem("Donnée", tabName = "donnee", icon = icon("fa-sharp fa-solid fa-database")),
