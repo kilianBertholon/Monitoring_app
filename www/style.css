@@ -1,0 +1,11 @@
+.main-header .logo {
+  font-family: "Georgia", Times, "Times New Roman", serif;
+  font-weight: bold;
+  font-size: 26px;
+  transition: color 0.3s, font-size 0.3s;
+}
+
+.main-header .logo:hover {
+  color: #000;
+  font-size: 28px;
+}

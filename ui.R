@@ -4,7 +4,14 @@ library(shinydashboard)
 library(shinyjs)
 
 ui <- dashboardPage(
-  dashboardHeader(title = "Application de Monitoring"),
+  #Couleur de la page 
+  skin = "red",
+  
+  #Gestion des paramètres pour la partie haute
+  dashboardHeader(title = "Application de Monitoring",
+                  titleWidth = 450),
+  
+  #Paramètres de sidebar
   dashboardSidebar(
     sidebarMenu(
       menuItem("Analyse", tabName = "analyse", icon = icon("fa-sharp fa-solid fa-magnifying-glass-chart")),
@@ -12,5 +19,10 @@ ui <- dashboardPage(
       menuItem("Gestion donnée", tabName = "gestion", icon = icon("fa-sharp fa-solid fa-download"))
     )
   ),
-  dashboardBody()
-)
+  
+  #Paramétres centraux
+  dashboardBody(
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "style.css"
+  ))
+))
