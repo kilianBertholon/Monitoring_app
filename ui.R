@@ -5,7 +5,7 @@ library(shinyjs)
 library(DT)
 
 ui <- dashboardPage(
-  #Couleur de la page 
+  #Couleur de la page
   skin = "red",
   
   #Gestion des paramètres pour la partie haute
@@ -13,22 +13,38 @@ ui <- dashboardPage(
                   titleWidth = 450),
   
   #Paramètres de sidebar
-  dashboardSidebar(
-    width = 350,
-    sidebarMenu(
-      menuItem("Analyse", tabName = "analyse", icon = icon("fa-sharp fa-solid fa-magnifying-glass-chart")),
-      menuItem("Donnée", tabName = "donnee", icon = icon("fa-sharp fa-solid fa-database")),
-      menuItem("Gestion donnée", tabName = "gestion", icon = icon("fa-sharp fa-solid fa-download"))
-    )
-  ),
+  dashboardSidebar(width = 350,
+                   sidebarMenu(
+                     menuItem(
+                       "Analyse",
+                       tabName = "analyse",
+                       icon = icon("fa-sharp fa-solid fa-magnifying-glass-chart")
+                     ),
+                     menuItem(
+                       "Donnée",
+                       tabName = "donnee",
+                       icon = icon("fa-sharp fa-solid fa-database")
+                     ),
+                     menuItem(
+                       "Gestion donnée",
+                       tabName = "gestion",
+                       icon = icon("fa-sharp fa-solid fa-download")
+                     )
+                   )),
   
   #Paramétres centraux
-  dashboardBody(
-    tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "style.css"
-  )),
-  tabPanel("donnee",
-           fluidPage(
-             DTOutput("tableau_data")
-           ))
-))
+  dashboardBody(tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+  ),
+  tabItems(
+    tabItem("analyse",
+            box(
+              title = "Analyse par athlètes",
+              uiOutput("selectAthlete"),
+              uiOutput("selectDate")
+            )),
+    tabItem("donnee",
+            fluidPage(DTOutput("tableau_data"))),
+    tabItem("gestion")
+  ))
+)

@@ -13,7 +13,9 @@ data_num$Valeur <- as.numeric(data_num$Valeur)
 data_num$Valeur <- round(data_num$Valeur, 3)
 
 
-
+#Variable de sélection 
+Sujet <- unique(data_num$Sujet)
+date <- unique(data_num$Date)
 
 
 

@@ -6,6 +6,7 @@ library(DT)
 library(readxl)
 library(lubridate)
 library(data.table)
+library(dplyr)
 
 
 source(file = "script.R")
@@ -15,7 +16,19 @@ server <- function(input, output, session) {
   
   ######Partie Analyse ##########
   
+  output$selectAthlete <- renderUI({
+    selectInput("Sujet",
+                "Chosir un sujet : ",
+                choices = unique(Sujet),
+                multiple = FALSE)
+  })
   
+  output$selectDate <- renderUI({
+    selectInput("Date",
+                "Chosir une Date : ",
+                choices = date,
+                multiple = TRUE)
+  })
   
   
   
@@ -31,7 +44,20 @@ server <- function(input, output, session) {
   
   ######Partie gestion des données ##########
   
+
   
+  
+  
+  
+  
+  ########### Observe event ################################################
+  #Observe event selection de l'athlete
+  observeEvent(input$Sujet, {
+    updateSelectInput(session,
+                      "selectDate",
+                      "Choisir une date : ",
+                      choices = data_num$Date[data_num$Sujet == input$Sujet])
+  })
 }
 
 
