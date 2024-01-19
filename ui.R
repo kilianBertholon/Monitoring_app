@@ -37,19 +37,29 @@ ui <- dashboardPage(
     tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
   ),
   tabItems(
-    tabItem("analyse",
+    tabItem(
+      "analyse",
+      fluidRow(column(
+        width = 12,
+        box(title = "Analyse par athlètes",
             fluidRow(
-              column(width = 12,
-            box(
-              title = "Analyse par athlètes",
-              fluidRow(
               column(width = 6, uiOutput("selectAthlete")),
               column(width = 6, uiOutput("selectDate"))
-            )))),
-            fluidRow(
-              column(width = 12,
-            box(width = 12, title = "Données anthropométriques",
-                  DTOutput("tableau_anth"))))),
+            ))
+      )),
+      fluidRow(column(
+        width = 12,
+        box(width = 12, title = "Données anthropométriques",
+            DTOutput("tableau_anth"))
+      )),
+      fluidRow(column(
+        width = 12,
+        box(width = 12, 
+            title = "Performances",
+            plotlyOutput("graph_CMJ_FC_recup_IFT30_15_SJ"))
+      ))
+    ),
+    
     tabItem("donnee",
             fluidPage(DTOutput("tableau_data"))),
     tabItem("gestion")
