@@ -11,6 +11,7 @@ data_num$Valeur <- gsub(",", ".", data_num$Valeur)
 data_num$Valeur <- gsub("[<>]", "", data_num$Valeur)
 data_num$Valeur <- as.numeric(data_num$Valeur)
 data_num$Valeur <- round(data_num$Valeur, 3)
+data_num$Date <- as.Date(data_num$Date, format = "%d/%m/%Y")
 
 
 #Variable de sélection 
@@ -19,6 +20,7 @@ date <- unique(data_num$Date)
 
 
 
+### Function tableau globale 
 lire_tableau <- function() {
   datatable(
     data,
@@ -35,3 +37,5 @@ lire_tableau <- function() {
     )
   )
 }
+
+

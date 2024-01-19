@@ -38,11 +38,18 @@ ui <- dashboardPage(
   ),
   tabItems(
     tabItem("analyse",
+            fluidRow(
+              column(width = 12,
             box(
               title = "Analyse par athlètes",
-              uiOutput("selectAthlete"),
-              uiOutput("selectDate")
-            )),
+              fluidRow(
+              column(width = 6, uiOutput("selectAthlete")),
+              column(width = 6, uiOutput("selectDate"))
+            )))),
+            fluidRow(
+              column(width = 12,
+            box(width = 12, title = "Données anthropométriques",
+                  DTOutput("tableau_anth"))))),
     tabItem("donnee",
             fluidPage(DTOutput("tableau_data"))),
     tabItem("gestion")
