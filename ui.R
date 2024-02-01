@@ -3,6 +3,7 @@ library(shiny)
 library(shinydashboard)
 library(shinyjs)
 library(DT)
+library(plotly)
 
 ui <- dashboardPage(
   #Couleur de la page
