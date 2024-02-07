@@ -410,28 +410,28 @@ server <- function(input, output, session) {
       
       output$Vit_E <- renderPlotly({
         create_plotly_chart(data_sujet[data_sujet$Variable == "Vit_E",],
-                            "Vitamine E", "Vitamine E", "blue")
+                            "Vit_E", "Vitamine E", "blue")
       })
       
       output$Vit_B6 <- renderPlotly({
         create_plotly_chart(data_sujet[data_sujet$Variable == "Vit_B6",],
-                            "Vitamine B6", "Vitramine B6", "blue")
+                            "Vit_B6", "Vitramine B6", "blue")
       })
       
       output$Vit_B12 <- renderPlotly({
         create_plotly_chart(data_sujet[data_sujet$Variable == "Vit_B12",],
-                            "Vitamine B12", "Vitramine B12", "blue")
+                            "Vit_B12", "Vitramine B12", "blue")
       })
       
       output$Vit_C <- renderPlotly({
         create_plotly_chart(data_sujet[data_sujet$Variable == "Vit_C",],
-                            "Vitamine C", "Vitamine C", "blue")
+                            "Vit_C", "Vitamine C", "blue")
       })
       
       output$e1_25_dihydroxyvitamine_D <- renderPlotly({
         create_plotly_chart(
           data_sujet[data_sujet$Variable == "1_25-dihydroxyvitamine_D",],
-          "1_25_dihydroxyvitamine_D",
+          "1_25-dihydroxyvitamine_D",
           "1_25_dihydroxyvitamine_D",
           "blue"
         )
@@ -470,3 +470,6 @@ server <- function(input, output, session) {
                       choices = data_num$Date[data_num$Sujet == input$Sujet])
   })
 }
+
+
+# https://onedrive.live.com/edit?id=77828CE59FE60E0!60773&resid=77828CE59FE60E0!60773&ithint=file%2cxlsx&authkey=!ADQ2ULWwIOZ64lQ&wdo=2&cid=077828ce59fe60e0
