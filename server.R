@@ -462,6 +462,8 @@ server <- function(input, output, session) {
       # Assurez-vous que les noms des Variables correspondent à ceux de votre application
       sujet_selected <- input$Sujet
       
+      range_value <- read_excel("data/Range_value.xlsx")
+      
       data_joined <- left_join(data_num, range_value, by = "Variable") %>%
         filter(Sujet == sujet_selected) %>% # Filtrer par le sujet sélectionné
         mutate(Ecart = case_when(

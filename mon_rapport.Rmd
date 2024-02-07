@@ -3,26 +3,26 @@ title: "`r paste('Rapport du sujet :', params$sujet)`"
 date: "`r paste('Edité le :', format(Sys.time(), '%d %B %Y à %H:%M:%S'))`"
 output: pdf_document
 params:
-  variables_receding_from_norms: NULL
-  variables_approaching_norms: NULL
+  Variables_receding_from_norms: NULL
+  Variables_approaching_norms: NULL
   sujet: "Sujet par défaut" # Alignement correct de l'indentation
 ---
 
 
 ```{r receding-norms-display, echo=FALSE}
-if (!is.null(params$variables_receding_from_norms) && nrow(params$variables_receding_from_norms) > 0) {
-  knitr::kable(params$variables_receding_from_norms, 
+if (!is.null(params$Variables_receding_from_norms) && nrow(params$Variables_receding_from_norms) > 0) {
+  knitr::kable(params$Variables_receding_from_norms, 
                caption = "Variables toujours en dehors des normes depuis la précédente analyse sans amélioration")
 } else {
-  cat("Aucune variable ne s'est éloignée des normes pour le sujet sélectionné.")
+  cat("Aucune Variable ne s'est éloignée des normes pour le sujet sélectionné.")
 }
 
 ```{r approaching-norms-display, echo=FALSE}
-if (!is.null(params$variables_approaching_norms) && nrow(params$variables_approaching_norms) > 0) {
-  knitr::kable(params$variables_approaching_norms, 
+if (!is.null(params$Variables_approaching_norms) && nrow(params$Variables_approaching_norms) > 0) {
+  knitr::kable(params$Variables_approaching_norms, 
                caption = "Variables toujours en dehors des normes depuis la précédente analyse avec amélioration")
 } else {
-  cat("Aucune variable ne s'est rapprochée des normes pour le sujet sélectionné.")
+  cat("Aucune Variable ne s'est rapprochée des normes pour le sujet sélectionné.")
 }
 
 
