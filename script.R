@@ -1,5 +1,5 @@
 #Import data + traitement
-data <- read_excel("data/data_tidy.xlsx")
+data <- read_excel("/Users/mathieubourgeois/Documents/GitHub/Monitoring_app/data/data_tidy.xlsx")
 
 #Traitement 
 ## Date
@@ -18,9 +18,8 @@ data_num$Date <- as.Date(data_num$Date, format = "%d/%m/%Y")
 Sujet <- unique(data_num$Sujet)
 date <- unique(data_num$Date)
 
+Variables <- unique(data$Variable)
 
-
-### Function tableau globale 
 lire_tableau <- function() {
   datatable(
     data,
@@ -37,5 +36,3 @@ lire_tableau <- function() {
     )
   )
 }
-
-

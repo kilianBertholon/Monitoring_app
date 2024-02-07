@@ -19,14 +19,14 @@ server <- function(input, output, session) {
   
   output$selectAthlete <- renderUI({
     selectInput("Sujet",
-                "Chosir un sujet : ",
+                "Choisir un sujet : ",
                 choices = unique(Sujet),
                 multiple = FALSE)
   })
   
   output$selectDate <- renderUI({
     selectInput("Date",
-                "Chosir une Date : ",
+                "Choisir une Date : ",
                 choices = date,
                 multiple = TRUE)
   })
@@ -44,7 +44,7 @@ server <- function(input, output, session) {
         # Filtrer par date si une date est sélectionnée
         if (!is.null(date_select)) {
           data_anthro <- data_sujet %>%
-            filter(variable %in% c("Age", "Poids", "Masse_Grasse"),
+            filter(Variable %in% c("Age", "Poids", "Masse_Grasse"),
                    Date %in% date_select) %>%
             arrange(desc(Date))
           
@@ -54,7 +54,7 @@ server <- function(input, output, session) {
         } else {
           # Si aucune date n'est sélectionnée, prendre toutes les dates
           data_anthro <- data_sujet %>%
-            filter(variable %in% c("Age", "Poids", "Masse_Grasse")) %>%
+            filter(Variable %in% c("Age", "Poids", "Masse_Grasse")) %>%
             arrange(desc(Date))
           
           # Renommer la colonne "Valeur" avec la date de la prise de valeur
@@ -78,7 +78,7 @@ server <- function(input, output, session) {
   
   # Fonction pour créer un graphique plotly avec des lignes reliant les points
   create_plotly_chart <- function(data,
-                                  variable_name,
+                                  Variable_name,
                                   title,
                                   highlight_color) {
     sujet_select <- input$Sujet
@@ -87,8 +87,8 @@ server <- function(input, output, session) {
     # Charger les ranges depuis le fichier Excel
     ranges <- read_excel("data/Range_value.xlsx")
     
-    # Filtrer les ranges en fonction de la variable sélectionnée
-    selected_range <- ranges[ranges$variable == variable_name, ]
+    # Filtrer les ranges en fonction de la Variable sélectionnée
+    selected_range <- ranges[ranges$Variable == Variable_name, ]
     
     # Ajouter un rectangle de couleur représentant la plage de valeurs
     rectangle <- list(
@@ -155,7 +155,7 @@ server <- function(input, output, session) {
       layout(
         title = title,
         xaxis = list(title = "Date"),
-        yaxis = list(title = variable_name),
+        yaxis = list(title = Variable_name),
         shapes = list(rectangle, yellow_zone_sup)  # Ajouter les zones jaunes et rouges
       )
   }
@@ -184,198 +184,198 @@ server <- function(input, output, session) {
       
       # Créer les graphiques plotly avec lignes reliant les points de chaque athlète
       output$graph_CMJ <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "CMJ",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "CMJ",],
                             "Hauteur du saut(cm)", "Sauts CMJ", "blue")
       })
       
       output$graph_FC_recup <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "FC_recup",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "FC_recup",],
                             "Fréquence cardiaque de récupération (bpm)",
                             "FC récup",
                             "blue")
       })
       
       output$graph_IFT30_15 <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "IFT30_15",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "IFT30_15",],
                             "IFT30_15 (km/h)", "IFT30_15", "blue")
       })
       
       output$graph_SJ <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "SJ",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "SJ",],
                             "Hauteur du saut (cm)", "Sauts SJ", "blue")
       })
       
       output$graph_Azote_ureique <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Azote_ureique",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Azote_ureique",],
                             "Azote_ureique", "Azote uréique", "blue")
       })
       
       output$graph_Magnesium <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Magnesium",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Magnesium",],
                             "Magnesium", "Magnesium", "blue")
       })
       
       output$graph_Bilirubine <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Bilirubine",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Bilirubine",],
                             "Bilirubine", "Bilirubine", "blue")
       })
       
       
       output$Lactate_deshydrogenase <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Lactate_deshydrogenase",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Lactate_deshydrogenase",],
                             "Lactate_deshydrogenase",
                             "Lactate deshydrogenase",
                             "blue")
       })
       
       output$Creatine_kinase <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Creatine_kinase",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Creatine_kinase",],
                             "Creatine_kinase",
                             "Creatine kinase",
                             "blue")
       })
       
       output$Acide_Urique <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Acide_Urique",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Acide_Urique",],
                             "Acide_Urique", "Acide Urique", "blue")
       })
       
       output$Proteine_C_reactive <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Proteine_C_reactive",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Proteine_C_reactive",],
                             "Proteine_C_reactive",
                             "Proteine C reactive",
                             "blue")
       })
       
       output$Sodium <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Sodium",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Sodium",],
                             "Sodium", "Sodium", "blue")
       })
       
       output$Potassium <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Potassium",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Potassium",],
                             "Potassium", "Potassium", "blue")
       })
       
       output$Calcium <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Calcium",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Calcium",],
                             "Calcium", "Calcium", "blue")
       })
       
       output$Myoglobine <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Myoglobine",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Myoglobine",],
                             "Myoglobine", "Myoglobine", "blue")
       })
       
       output$Cholesterol <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Cholesterol",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Cholesterol",],
                             "Cholesterol", "Cholesterol", "blue")
       })
       
       output$HDL <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "HDL",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "HDL",],
                             "HDL", "HDL", "blue")
       })
       
       output$LDL <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "LDL",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "LDL",],
                             "LDL", "LDL", "blue")
       })
       
       output$Triglicerides <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Triglicerides",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Triglicerides",],
                             "Triglicerides", "Triglicerides", "blue")
       })
       
       output$Glucose <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Glucose",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Glucose",],
                             "Glucose", "Glucose", "blue")
       })
       
       output$WBC <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "WBC",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "WBC",],
                             "WBC", "WBC", "blue")
       })
       
       output$Neutrophiles <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Neutrophiles",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Neutrophiles",],
                             "Neutrophiles", "Neutrophiles", "blue")
       })
       
       output$Lymphocytes <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Lymphocytes",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Lymphocytes",],
                             "Lymphocytes", "Lymphocytes", "blue")
       })
       
       
       output$Monocytes <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Monocytes",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Monocytes",],
                             "Monocytes", "Monocytes", "blue")
       })
       
       output$Eosinophile <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Eosinophile",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Eosinophile",],
                             "Eosinophile", "Eosinophile", "blue")
       })
       
       output$Basophile <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Basophile",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Basophile",],
                             "Basophile", "Basophile", "blue")
       })
       
       output$Plaquettes <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Plaquettes",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Plaquettes",],
                             "Plaquettes", "Plaquettes", "blue")
       })
       
       output$RBC <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "RBC",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "RBC",],
                             "RBC", "RBC", "blue")
       })
       
       output$Hemoglobine <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Hemoglobine",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Hemoglobine",],
                             "Hemoglobine", "Hemoglobine", "blue")
       })
       
       output$MCV <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "MCV",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "MCV",],
                             "MCV", "MCV", "blue")
       })
       
       output$Hematocrite <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Hematocrite",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Hematocrite",],
                             "Hematocrite", "Hematocrite", "blue")
       })
       
       output$MCH <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "MCH",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "MCH",],
                             "MCH", "MCH", "blue")
       })
       
       output$MCHC <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "MCHC",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "MCHC",],
                             "MCHC", "MCHC", "blue")
       })
       
       output$Transferrine <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Transferrine",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Transferrine",],
                             "Transferrine", "Transferrine", "blue")
       })
       
       output$Ferritine <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Ferritine",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Ferritine",],
                             "Ferritine", "Ferritine", "blue")
       })
       
       output$Fer <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Fer",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Fer",],
                             "Fer", "Fer", "blue")
       })
       
       output$Sat_transferrine <- renderPlotly({
         create_plotly_chart(
-          data_sujet[data_sujet$variable == "Sat_transferrine",],
+          data_sujet[data_sujet$Variable == "Sat_transferrine",],
           "Sat_transferrine",
           "Saturation en transferrine",
           "blue"
@@ -383,54 +383,54 @@ server <- function(input, output, session) {
       })
       
       output$Testosterone <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Testosterone",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Testosterone",],
                             "Testosterone", "Testosterone", "blue")
       })
       
       output$Cortisol <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Cortisol",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Cortisol",],
                             "Cortisol", "Cortisol", "blue")
       })
       
       output$IL_6 <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "IL_6",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "IL_6",],
                             "IL_6", "IL_6", "blue")
       })
       
       ##### Partie vitamines
       output$Retinol <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Retinol",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Retinol",],
                             "Retinol", "Retinol", "blue")
       })
       
       output$Beta_carotene <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Beta_carotene",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Beta_carotene",],
                             "Beta_carotene", "Beta carotene", "blue")
       })
       
       output$Vit_E <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Vit_E",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Vit_E",],
                             "Vitamine E", "Vitamine E", "blue")
       })
       
       output$Vit_B6 <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Vit_B6",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Vit_B6",],
                             "Vitamine B6", "Vitramine B6", "blue")
       })
       
       output$Vit_B12 <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Vit_B12",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Vit_B12",],
                             "Vitamine B12", "Vitramine B12", "blue")
       })
       
       output$Vit_C <- renderPlotly({
-        create_plotly_chart(data_sujet[data_sujet$variable == "Vit_C",],
+        create_plotly_chart(data_sujet[data_sujet$Variable == "Vit_C",],
                             "Vitamine C", "Vitamine C", "blue")
       })
       
       output$e1_25_dihydroxyvitamine_D <- renderPlotly({
         create_plotly_chart(
-          data_sujet[data_sujet$variable == "1_25-dihydroxyvitamine_D",],
+          data_sujet[data_sujet$Variable == "1_25-dihydroxyvitamine_D",],
           "1_25_dihydroxyvitamine_D",
           "1_25_dihydroxyvitamine_D",
           "blue"
@@ -459,10 +459,10 @@ server <- function(input, output, session) {
       paste("rapport-", input$Sujet, "-", format(Sys.Date(), "%Y-%m-%d"), ".pdf")
     },
     content = function(file) {
-      # Assurez-vous que les noms des variables correspondent à ceux de votre application
+      # Assurez-vous que les noms des Variables correspondent à ceux de votre application
       sujet_selected <- input$Sujet
       
-      data_joined <- left_join(data_num, range_value, by = "variable") %>%
+      data_joined <- left_join(data_num, range_value, by = "Variable") %>%
         filter(Sujet == sujet_selected) %>% # Filtrer par le sujet sélectionné
         mutate(Ecart = case_when(
           Valeur < min ~ min - Valeur,
@@ -471,11 +471,11 @@ server <- function(input, output, session) {
         ))
       
       data_sorted <- data_joined %>%
-        arrange(Sujet, variable, Date)
+        arrange(Sujet, Variable, Date)
       
-      # Calcul de First_Value et Last_Value pour chaque Sujet et variable, en s'assurant qu'ils sont hors des normes
+      # Calcul de First_Value et Last_Value pour chaque Sujet et Variable, en s'assurant qu'ils sont hors des normes
       value_comparison <- data_sorted %>%
-        group_by(Sujet, variable) %>%
+        group_by(Sujet, Variable) %>%
         summarise(First_Value = first(Valeur),
                   Last_Value = last(Valeur),
                   Min = first(min),
@@ -499,20 +499,20 @@ server <- function(input, output, session) {
         filter((First_Value < Min | First_Value > Max) & (Last_Value < Min | Last_Value > Max))
       
       
-      # Filtrer pour obtenir les variables qui se sont rapprochées des normes
-      variables_approaching_norms <- filter(value_comparison, Rapprochement) %>%
-        select(Sujet, Variable = variable, First_Value, Last_Value, Min, Max)
+      # Filtrer pour obtenir les Variables qui se sont rapprochées des normes
+      Variables_approaching_norms <- filter(value_comparison, Rapprochement) %>%
+        select(Sujet, Variable = Variable, First_Value, Last_Value, Min, Max)
       
-      # Filtrer pour obtenir les variables qui se sont éloignées des normes
-      variables_receding_from_norms <- filter(value_comparison, Eloignement) %>%
-        select(Sujet, Variable = variable, First_Value, Last_Value, Min, Max)
+      # Filtrer pour obtenir les Variables qui se sont éloignées des normes
+      Variables_receding_from_norms <- filter(value_comparison, Eloignement) %>%
+        select(Sujet, Variable = Variable, First_Value, Last_Value, Min, Max)
       
       
       # Utiliser `params` pour passer les données filtrées à R Markdown
       rmarkdown::render("/Users/mathieubourgeois/Documents/GitHub/Monitoring_app/mon_rapport.Rmd",
                         output_file = file,
-                        params = list(variables_approaching_norms = variables_approaching_norms,
-                                      variables_receding_from_norms = variables_receding_from_norms,
+                        params = list(Variables_approaching_norms = Variables_approaching_norms,
+                                      Variables_receding_from_norms = Variables_receding_from_norms,
                                       sujet = sujet_selected))  # Ajoutez cette ligne
       
     }
