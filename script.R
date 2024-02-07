@@ -1,5 +1,5 @@
 #Import data + traitement
-data <- read_excel("/Users/mathieubourgeois/Documents/GitHub/Monitoring_app/data/data_tidy.xlsx")
+data <- read_excel("data/data_tidy.xlsx")
 
 #Traitement 
 ## Date

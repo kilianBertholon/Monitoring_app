@@ -2,8 +2,8 @@ library(readxl)
 library(dplyr)
 
 # Lire les données
-data_num <- read_excel("/Users/mathieubourgeois/Documents/GitHub/Monitoring_app/data/data_num.xlsx")
-range_value <- read_excel("/Users/mathieubourgeois/Documents/GitHub/Monitoring_app/data/Range_value.xlsx")
+data_num <- read_excel("data/data_tidy.xlsx")
+range_value <- read_excel("data/Range_value.xlsx")
 
 data_num$Valeur <- gsub(",", ".", data_num$Valeur)
 data_num$Valeur <- gsub("[<>]", "", data_num$Valeur)

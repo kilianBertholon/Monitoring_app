@@ -511,7 +511,7 @@ server <- function(input, output, session) {
       
       
       # Utiliser `params` pour passer les données filtrées à R Markdown
-      rmarkdown::render("/Users/mathieubourgeois/Documents/GitHub/Monitoring_app/mon_rapport.Rmd",
+      rmarkdown::render("mon_rapport.Rmd",
                         output_file = file,
                         params = list(Variables_approaching_norms = Variables_approaching_norms,
                                       Variables_receding_from_norms = Variables_receding_from_norms,
