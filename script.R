@@ -1,5 +1,12 @@
+gs4_auth(email = "kilian.bertholon02@gmail.com", cache = ".secrets")
+
+
+
+
 #Import data + traitement
-data <- read_excel("data/data_tidy.xlsx")
+gs4_deauth()
+sheet_tidy <- "https://docs.google.com/spreadsheets/d/1jty0iGJY-FLLkEQHKyRe12qRD9MLZzEQd2TXjclGemM/edit#gid=0"
+data <- read_sheet(sheet_tidy)
 
 #Traitement 
 ## Date

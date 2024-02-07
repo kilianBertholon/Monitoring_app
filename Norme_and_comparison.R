@@ -2,8 +2,10 @@ library(readxl)
 library(dplyr)
 
 # Lire les données
-data_num <- read_excel("data/data_tidy.xlsx")
-range_value <- read_excel("data/Range_value.xlsx")
+data_num <- read_sheet(sheet_tidy)
+
+sheet_range <- "https://docs.google.com/spreadsheets/d/1ykAvHxprWWsUDyPJX5gTMTYV6vPJUm4dX-kc68UgiDw/edit#gid=0"
+range_value <- read_sheet(sheet_range)
 
 data_num$Valeur <- gsub(",", ".", data_num$Valeur)
 data_num$Valeur <- gsub("[<>]", "", data_num$Valeur)

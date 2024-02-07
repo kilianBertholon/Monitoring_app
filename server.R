@@ -9,6 +9,8 @@ library(data.table)
 library(dplyr)
 library(tidyr)
 library(plotly)
+library(googlesheets4)
+
 
 
 source(file = "script.R")
