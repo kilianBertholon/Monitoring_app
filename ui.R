@@ -20,11 +20,7 @@ ui <- dashboardPage(
       menuItem("Analyse", tabName = "analyse", icon = icon("fa-sharp fa-solid fa-magnifying-glass-chart")),
       menuItem("Donnée", tabName = "donnee", icon = icon("fa-sharp fa-solid fa-database")),
       menuItem("Gestion donnée", tabName = "gestion", icon = icon("fa-sharp fa-solid fa-download"))
-    ),
-    # Correctement placer le bouton de téléchargement après la fermeture de sidebarMenu
-    div(style = "display: flex; justify-content: center; padding-top: 20px;", 
-        downloadButton("downloadPDF", "Télécharger le PDF", style = "margin: auto;"))
-  ),
+    )),
                      
   #Paramétres centraux
   dashboardBody(tags$head(
@@ -41,6 +37,8 @@ ui <- dashboardPage(
               column(width = 6, uiOutput("selectDate"))
             ))
       )),
+      tabsetPanel(
+        tabPanel("Analyse complète",
       fluidRow(column(
         width = 12,
         box(width = 12, title = "Données anthropométriques",
@@ -286,6 +284,12 @@ ui <- dashboardPage(
       ))
       
     ),
+    tabPanel("Analyse synthéthique"),
+    tabPanel("Télécharger un PDF", 
+             # Correctement placer le bouton de téléchargement après la fermeture de sidebarMenu
+             div(style = "display: flex; justify-content: center; padding-top: 40px;", 
+                 downloadButton("downloadPDF", "Télécharger le PDF", style = "margin: auto;"))
+    ))),
     
     tabItem("donnee",
             fluidPage(DTOutput("tableau_data"))),
