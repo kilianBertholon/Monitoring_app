@@ -14,25 +14,18 @@ ui <- dashboardPage(
                   titleWidth = 450),
   
   #Paramètres de sidebar
-  dashboardSidebar(width = 350,
-                   sidebarMenu(
-                     menuItem(
-                       "Analyse",
-                       tabName = "analyse",
-                       icon = icon("fa-sharp fa-solid fa-magnifying-glass-chart")
-                     ),
-                     menuItem(
-                       "Donnée",
-                       tabName = "donnee",
-                       icon = icon("fa-sharp fa-solid fa-database")
-                     ),
-                     menuItem(
-                       "Gestion donnée",
-                       tabName = "gestion",
-                       icon = icon("fa-sharp fa-solid fa-download")
-                     )
-                   )),
-  
+  dashboardSidebar(
+    width = 350,
+    sidebarMenu(
+      menuItem("Analyse", tabName = "analyse", icon = icon("fa-sharp fa-solid fa-magnifying-glass-chart")),
+      menuItem("Donnée", tabName = "donnee", icon = icon("fa-sharp fa-solid fa-database")),
+      menuItem("Gestion donnée", tabName = "gestion", icon = icon("fa-sharp fa-solid fa-download"))
+    ),
+    # Correctement placer le bouton de téléchargement après la fermeture de sidebarMenu
+    div(style = "display: flex; justify-content: center; padding-top: 20px;", 
+        downloadButton("downloadPDF", "Télécharger le PDF", style = "margin: auto;"))
+  ),
+                     
   #Paramétres centraux
   dashboardBody(tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
