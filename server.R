@@ -15,7 +15,6 @@ library(tidyr)
 sheet_range <-
   "https://docs.google.com/spreadsheets/d/1ykAvHxprWWsUDyPJX5gTMTYV6vPJUm4dX-kc68UgiDw/edit#gid=0"
 
-
 source(file = "script.R")
 source(file = "Norme_and_comparison.R")
 
@@ -35,6 +34,16 @@ server <- function(input, output, session) {
                 "Choisir une Date : ",
                 choices = date,
                 multiple = TRUE)
+  })
+  
+  observe({
+    selected_dates <- input$Date
+    
+    # Vérifier si aucune valeur n'est sélectionnée
+    if (is.null(selected_dates) || length(selected_dates) == 0) {
+      # Sélectionner la première valeur par défaut
+      updateSelectInput(session, "Date", selected = date[1])
+    }
   })
   
   output$tableau_anth <- renderDT({
@@ -110,18 +119,18 @@ server <- function(input, output, session) {
     )
     
     # Ajouter une zone jaune si les valeurs sont dans les 5% de l'amplitude du range
-    yellow_zone_sup <- list(
-      type = "rect",
-      x0 = min(data$Date),
-      x1 = max(data$Date),
-      y0 = selected_range$max,
-      y1 = round(selected_range$max + (selected_range$max * 0.05), 2),
-      fillcolor = "rgba(255, 255, 0, 0.5)",
-      # Couleur jaune avec opacité réduite
-      line = list(width = 0),
-      layer = "below"
-    )
-    
+    # yellow_zone_sup <- list(
+    #   type = "rect",
+    #   x0 = min(data$Date),
+    #   x1 = max(data$Date),
+    #   y0 = selected_range$max,
+    #   y1 = round(selected_range$max + (selected_range$max * 0.05), 2),
+    #   fillcolor = "rgba(255, 255, 0, 0.5)",
+    #   # Couleur jaune avec opacité réduite
+    #   line = list(width = 0),
+    #   layer = "below"
+    # )
+    # 
     
     
     # yellow_zone_inf <- list(
@@ -162,7 +171,7 @@ server <- function(input, output, session) {
         title = title,
         xaxis = list(title = "Date"),
         yaxis = list(title = Variable_name),
-        shapes = list(rectangle, yellow_zone_sup)  # Ajouter les zones jaunes et rouges
+        shapes = list(rectangle)  # Ajouter les zones jaunes et rouges
       )
   }
   
@@ -481,7 +490,7 @@ server <- function(input, output, session) {
       # Assurez-vous que les noms des Variables correspondent à ceux de votre application
       sujet_selected <- input$Sujet
       
-
+      
       data_joined <-
         left_join(data_num, range_value, by = "Variable") %>%
         filter(Sujet == sujet_selected) %>% # Filtrer par le sujet sélectionné
@@ -522,7 +531,8 @@ server <- function(input, output, session) {
         ) %>%
         # S'assurer d'inclure seulement les lignes où les valeurs initiales et finales sont hors des normes
         filter((First_Value < Min |
-                  First_Value > Max) & (Last_Value < Min | Last_Value > Max))
+                  First_Value > Max) &
+                 (Last_Value < Min | Last_Value > Max))
       
       
       # Joindre value_comparison avec range_value pour récupérer 'Unite'
@@ -605,6 +615,10 @@ server <- function(input, output, session) {
   )
   
   
+  
+  #################################Radar #################################
+  
+  
   ########### Observe event ################################################
   #Observe event selection de l'athlete
   observeEvent(input$Sujet, {
@@ -613,4 +627,67 @@ server <- function(input, output, session) {
                       "Choisir une date : ",
                       choices = data_num$Date[data_num$Sujet == input$Sujet])
   })
+  
+  # Observer les changements dans radar_graphe_input
+  # Observer les changements dans radar_graphe_input
+  # Observation des événements dans Shiny
+  observeEvent(input$radar_graphe_input, {
+    # Construction des données à tracer en fonction des sélections
+    sujet_select <- input$Sujet
+    date_select <- input$Date
+    A_juin2023 <- radar_data(sujet_select, date_select)
+    
+    data_list <- list()
+    titles_list <- c()
+    
+    if ("Serum_Sang" %in% input$radar_graphe_input) {
+      A_juin2023_serum_sang <- A_juin2023[, 1:16]
+      data_list <- c(data_list, list(A_juin2023_serum_sang))
+      titles_list <- c(titles_list, "Serum Sang")
+    }
+    
+    if ("Analyse_Sang_totale" %in% input$radar_graphe_input) {
+      A_juin2023_analyse_sang <- A_juin2023[, 17:29]
+      data_list <- c(data_list, list(A_juin2023_analyse_sang))
+      titles_list <- c(titles_list, "Analyse sang")
+    }
+    
+    if ("Indice_hemato_fer" %in% input$radar_graphe_input) {
+      A_juin2023_hemato_fer <- A_juin2023[, 30:33]
+      data_list <- c(data_list, list(A_juin2023_hemato_fer))
+      titles_list <- c(titles_list, "Hemato fer")
+    }
+    
+    if ("Hormones" %in% input$radar_graphe_input) {
+      A_juin2023_hormones <- A_juin2023[, 34:36]
+      data_list <- c(data_list, list(A_juin2023_hormones))
+      titles_list <- c(titles_list, "Hormones")
+    }
+    
+    if ("Vitamines" %in% input$radar_graphe_input) {
+      A_juin2023_vitamines <- A_juin2023[, 37:43]
+      data_list <- c(data_list, list(A_juin2023_vitamines))
+      titles_list <- c(titles_list, "Vitamines")
+    }
+    
+    # Déterminer le nombre de lignes et de colonnes pour la disposition des sous-graphiques
+    num_graphs <- length(data_list)
+    num_cols <- 2  # Nombre de graphes par ligne
+    num_rows <- ceiling(num_graphs / num_cols)
+    
+    # Tracer les graphiques radar avec la fonction définie
+    output$radar_graphs <- renderPlot({
+      par(mfrow = c(num_rows, num_cols))  # Définir la disposition des sous-graphiques
+      plot_radar_graphs(data_list, titles_list)
+    })
+  })
+    
+
+  
+  
+  
+  #########################################Gestion des données#############################
+  
+  
+  
 }

@@ -20,6 +20,8 @@ data_num$Valeur <- as.numeric(data_num$Valeur)
 data_num$Valeur <- round(data_num$Valeur, 3)
 data_num$Date <- as.Date(data_num$Date, format = "%d/%m/%Y")
 
+Categorie <- unique(data_num$Categorie)[-c(1, 2)]
+
 
 #Variable de sélection 
 Sujet <- unique(data_num$Sujet)

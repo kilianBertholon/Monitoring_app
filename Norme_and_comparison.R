@@ -110,3 +110,66 @@ last_date <- max(data_num$Date[data_num$Sujet == 'A'])
 values_to_check <- values_out_of_range_filtered %>%
   filter(Sujet == 'A', Date == last_date, Valeur < min | Valeur > max) %>%
   select(Sujet, Date, Categorie, Variable, Valeur, min, max, Unite)
+
+
+
+
+################# RadarChart
+
+sheet_radar <- "https://docs.google.com/spreadsheets/d/1OaH5HMtmgiAYGv35wNGT1t31qL3dNLObJWrgS8wElMk/edit#gid=0"
+data_radar_2 <- read_sheet(sheet_radar)
+
+#Traitement 
+## Date
+data_radar_2$Date <- format(data_radar_2$Date, "%e/%m/%Y")
+
+#Data num (sans <,>)
+data_radar <- copy(data_radar_2)
+data_radar$Valeur <- gsub(",", ".", data_radar$Valeur)
+data_radar$Valeur <- gsub("[<>]", "", data_radar$Valeur)
+data_radar$Valeur <- as.numeric(data_radar$Valeur)
+data_radar$Valeur <- round(data_radar$Valeur, 3)
+data_radar$Date <- as.Date(data_radar$Date, format = "%d/%m/%Y")
+
+radar_data <- function(sujet, date) {
+  A_juin2023 <- data_radar |>
+    filter(Sujet == sujet, Date == date) |>
+    select(Max, Min, Valeur, Valeur_max, Valeur_min)
+  A_juin2023 <- as.data.frame(t(A_juin2023))
+  colnames <- c("Azote_ureique", "Magnesium",
+                "Bilirubine", "Lactate_deshydrogenase",
+                "Creatine_kinase", "Acide_Urique",
+                "Proteine_C_reactive", "Sodium", "Potassium",
+                "Calcium", "Myoglobine", "Cholesterol",
+                "HDL", "LDL", "Triglicerides",
+                "Glucose", "WBC", "Neutrophiles",
+                "Lymphocytes", "Monocytes", "Eosinophile",
+                "Basophile", "Plaquettes", "RBC",
+                "Hemoglobine", "MCV", "Hematocrite",
+                "MCH", "MCHC", "Transferrine",
+                "Ferritine", "Fer", "Sat_transferrine",
+                "Testosterone", "Cortisol", "IL_6",
+                "Retinol", "Beta_carotene", "Vit_E",
+                "Vit_B6", "Vit_B12", "Vit_C",
+                "1_25-dihydroxyvitamine_D")
+  colnames(A_juin2023) <- colnames
+  A_juin2023 <- data.frame(lapply(A_juin2023, function(x) as.numeric(as.character(trimws(x)))))
+  return(A_juin2023)
+}
+
+# Définition de la fonction plot_radar_graphs
+plot_radar_graphs <- function(data_list, titles_list) {
+  par(mfrow = c(2, 3))  # Définir la disposition des sous-graphiques
+  
+  for (i in seq_along(data_list)) {
+    radarchart(data_list[[i]], title = titles_list[i], axistype = 1, seg = 5, 
+               pcol = c("blue", "red", "green"), plwd = c(1, 1, 1), 
+               pfcol = c(alpha("blue", 0.3), alpha("red", 0.3), alpha("green", 0.3)), 
+               plty = 1)
+  }
+  
+  # Ajouter une légende
+  legend("bottomright", legend = c("Valeur", "Valeur_max", "Valeur_min"), 
+         fill = c("blue", "red", "green"))
+}
+
