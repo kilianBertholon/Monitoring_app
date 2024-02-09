@@ -4,10 +4,9 @@ username: miasanmia
 account: miasanmia
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 11174163
-bundleId: 8239089
+appId: 11187037
+bundleId: 8239574
 url: https://miasanmia.shinyapps.io/Monitoring_app/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: README.md|Script_radar.R
