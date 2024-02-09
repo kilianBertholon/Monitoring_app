@@ -11,12 +11,21 @@ library(tidyr)
 library(plotly)
 library(googlesheets4)
 library(tidyr)
+library(fmsb)
+library(viridisLite)
 
-sheet_range <-
-  "https://docs.google.com/spreadsheets/d/1ykAvHxprWWsUDyPJX5gTMTYV6vPJUm4dX-kc68UgiDw/edit#gid=0"
-
+source(file = "Import_data.R")
 source(file = "script.R")
 source(file = "Norme_and_comparison.R")
+
+options(
+  gargle_oauth_email = TRUE,
+  gargle_ouath_cache = ".secrets"
+)
+
+gs4_auth(email = "kilian.bertholon02@gmail.com", cache = ".secrets")
+
+
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
@@ -33,7 +42,8 @@ server <- function(input, output, session) {
     selectInput("Date",
                 "Choisir une Date : ",
                 choices = date,
-                multiple = TRUE)
+                multiple = TRUE,
+                selectize = TRUE)
   })
   
   observe({
@@ -41,10 +51,11 @@ server <- function(input, output, session) {
     
     # Vérifier si aucune valeur n'est sélectionnée
     if (is.null(selected_dates) || length(selected_dates) == 0) {
-      # Sélectionner la première valeur par défaut
-      updateSelectInput(session, "Date", selected = date[1])
+      # Sélectionner toutes les valeurs par défaut
+      updateSelectInput(session, "Date", selected = date)
     }
   })
+    
   
   output$tableau_anth <- renderDT({
     sujet_select <- input$Sujet
@@ -90,6 +101,7 @@ server <- function(input, output, session) {
   
   
   ### Partie Performances
+  ranges <- data.frame(range_value)
   
   # Fonction pour créer un graphique plotly avec des lignes reliant les points
   create_plotly_chart <- function(data,
@@ -99,8 +111,6 @@ server <- function(input, output, session) {
     sujet_select <- input$Sujet
     data_sujet <- data[data$Sujet == sujet_select,]
     
-    # Charger les ranges depuis le fichier Excel
-    ranges <- read_excel("data/Range_value.xlsx")
     
     # Filtrer les ranges en fonction de la Variable sélectionnée
     selected_range <- ranges[ranges$Variable == Variable_name,]

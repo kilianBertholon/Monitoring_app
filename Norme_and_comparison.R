@@ -1,21 +1,7 @@
 library(readxl)
 library(dplyr)
 
-
-# Lire les données
-data_num <- read_sheet(sheet_tidy)
-
-sheet_range <- "https://docs.google.com/spreadsheets/d/1ykAvHxprWWsUDyPJX5gTMTYV6vPJUm4dX-kc68UgiDw/edit?usp=sharing"
-range_value <- read_sheet(sheet_range)
-
-data_num$Valeur <- gsub(",", ".", data_num$Valeur)
-data_num$Valeur <- gsub("[<>]", "", data_num$Valeur)
-data_num$Valeur <- as.numeric(data_num$Valeur)
-data_num$Valeur <- round(data_num$Valeur, 3)
-data_num$Date <- as.Date(data_num$Date, format = "%d/%m/%Y")
-
-# Joindre les dataframes pour comparer les valeurs
-data_joined <- left_join(data_num, range_value, by = "Variable")
+source(file = "Import_data.R")
 
 # Identifier les valeurs en dehors des plages normatives
 values_out_of_range <- data_joined %>%
@@ -115,21 +101,6 @@ values_to_check <- values_out_of_range_filtered %>%
 
 
 ################# RadarChart
-
-sheet_radar <- "https://docs.google.com/spreadsheets/d/1OaH5HMtmgiAYGv35wNGT1t31qL3dNLObJWrgS8wElMk/edit#gid=0"
-data_radar_2 <- read_sheet(sheet_radar)
-
-#Traitement 
-## Date
-data_radar_2$Date <- format(data_radar_2$Date, "%e/%m/%Y")
-
-#Data num (sans <,>)
-data_radar <- copy(data_radar_2)
-data_radar$Valeur <- gsub(",", ".", data_radar$Valeur)
-data_radar$Valeur <- gsub("[<>]", "", data_radar$Valeur)
-data_radar$Valeur <- as.numeric(data_radar$Valeur)
-data_radar$Valeur <- round(data_radar$Valeur, 3)
-data_radar$Date <- as.Date(data_radar$Date, format = "%d/%m/%Y")
 
 radar_data <- function(sujet, date) {
   A_juin2023 <- data_radar |>
