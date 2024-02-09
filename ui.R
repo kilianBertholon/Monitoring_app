@@ -324,43 +324,68 @@ ui <- dashboardPage(
               fluidRow(width = 12,
                        plotOutput("radar_graphs"))
             )
-          )),
-          tabPanel(
-            "Télécharger un PDF",
-            # Correctement placer le bouton de téléchargement après la fermeture de sidebarMenu
-            div(
-              style = "display: flex; justify-content: center; padding-top: 40px;",
-              downloadButton("downloadPDF", "Télécharger le PDF", style = "margin: auto;")
-            )
+          )
+        ),
+        tabPanel(
+          "Télécharger un PDF",
+          # Correctement placer le bouton de téléchargement après la fermeture de sidebarMenu
+          div(
+            style = "display: flex; justify-content: center; padding-top: 40px;",
+            downloadButton("downloadPDF", "Télécharger le PDF", style = "margin: auto;")
           )
         )
+      )
+    ),
+    
+    tabItem("donnee",
+            fluidPage(DTOutput("tableau_data"))),
+    tabItem(
+      "gestion",
+      box(
+        title = "Mise à jour des données",
+        width = 12,
+        fluidRow(column(
+          width = 12,
+          fileInput(
+            "file1",
+            "Importer un fichier similaire au fichier de Base (.xlsx, .xls, .ods, .csv)",
+            accept = c(".xlsx", ".xls", ".ods", ".csv"),
+            width = "100%"
+          )
+        ),
+        fluidRow(
+          width = 8,
+          tags$div(
+            style = "text-align: center;",
+            actionButton("Importer", "Importer les données dans la base", style = "color: red; font-size: 2.0em;")
+          )
+        ),
+        textOutput("insertion_message"))
       ),
-      
-      tabItem("donnee",
-              fluidPage(DTOutput("tableau_data"))),
-      tabItem(
-        "gestion",
-        box(
-          title = "Mise à jour des données",
+      fluidRow(
+        width = 12,
+        style = "max-height: 600px; overflow-y: auto;",
+      box(title = "Format des données",
           width = 12,
           fluidRow(column(
             width = 12,
-            fileInput(
-              "file1",
-              "Importer un fichier similaire au fichier de Base (.xlsx, .xls, .ods, .csv)",
-              accept = c(".xlsx", ".xls", ".ods", ".csv"),
-              width = "100%"
+            imageOutput("insertion_data", width = "100%", height = "auto"),
+            HTML(
+              "<p><u>Les catégories sont définies comme tel : </u></p>
+           <p></p>
+           <p><strong>Anthropometriques : </strong> Age, Poids, Masse_Grasse</p>
+           <p><strong>Performances : </strong> SJ, CMJ, FC_recup</p>
+           <p><strong>Serum_Sang : </strong> Azote_ureique, Magnesium, Bilirubine ,Lactate_deshydrogenase ,Creatine_kinase
+, Acide_Urique, Proteine_C_reactive, Sodium, Potassium, Calcium, Myoglobine, Cholesterol, HDL, LDL, Triglicerides, Glucose</p>
+           <p><strong>Analyse_Sang_totale : </strong> WBC, Neutrophiles, Lymphocytes, Monocytes, Eosinophile, Basophile, Plaquettes
+, RBC, Hemoglobine, MCV, Hematocrite, MCH, MCHC </p>
+           <p><strong>Indice_hemato_fer : </strong> Transferrine, Ferritine, Fer, Sat_transferrine</p>
+           <p><strong>Hormones : </strong> Testosterone, Cortisol, IL_6</p>
+           <p><strong>Vitamines : </strong> Retinol, Beta_carotene, Vit_E, Vit_B6, Vit_B12, Vit_C, 1_25-dihydroxyvitamine_D</p>"
             )
-          ),
-          fluidRow(
-            width = 8,
-            tags$div(
-              style = "text-align: center;",
-              actionButton("Importer", "Importer les données dans la base", style = "color: red; font-size: 2.0em;")
-            )
-          ))
-        )
-      )
+          ))))
     )
-  )
-  )
+    
+  ))
+
+)

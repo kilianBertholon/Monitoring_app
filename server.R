@@ -13,6 +13,8 @@ library(googlesheets4)
 library(tidyr)
 library(fmsb)
 library(viridisLite)
+library(readxl)
+
 
 source(file = "Import_data.R")
 source(file = "script.R")
@@ -22,6 +24,8 @@ options(
   gargle_oauth_email = TRUE,
   gargle_ouath_cache = ".secrets"
 )
+
+gs4_deauth()
 
 gs4_auth(email = "kilian.bertholon02@gmail.com", cache = ".secrets")
 
@@ -699,5 +703,64 @@ server <- function(input, output, session) {
   #########################################Gestion des données#############################
   
   
+  # Fonction pour afficher l'image
+  output$insertion_data <- renderImage({
+    # Spécifier le chemin de l'image
+    filename <- "image/insertion_data.png"  # Remplacez par le chemin de votre image
+    # Afficher l'image
+    list(src = filename, alt = "Mode d'import des données",  width = "100%", height = "auto") 
+    # 'alt' est le texte alternatif qui sera affiché si l'image ne peut pas être chargée
+  }, deleteFile = FALSE)  
+
   
+  
+  inserer_donnees_google_docs <- function(chemin_fichier, id_feuille) {
+    tryCatch({
+      # Lire les données en fonction du type de fichier
+      if (grepl("\\.xlsx$|\\.xls$", chemin_fichier)) {
+        donnees <- readxl::read_excel(chemin_fichier)
+      } else if (grepl("\\.csv$", chemin_fichier)) {
+        donnees <- read.csv(chemin_fichier)
+      } else {
+        stop("Le format de fichier n'est pas pris en charge. Veuillez utiliser un fichier .xlsx, .xls ou .csv.")
+      }
+      
+      # Se connecter à Google Sheets
+      gs4_auth(email = "kilian.bertholon02@gmail.com", cache = ".secrets")
+      
+      # Charger la feuille Google Sheets
+      feuille <- read_sheet(id_feuille)
+      
+      
+      donnees <- data.frame(donnees)
+      # Ajouter les données à partir de la première ligne vide
+      sheet_append(id_feuille, donnees)
+      
+      message("Les données ont été insérées avec succès dans Google Sheets.")
+    }, error = function(e) {
+      # Afficher un message d'erreur en cas d'erreur
+      message("Une erreur s'est produite lors de l'insertion des données dans Google Sheets :", e$message)
+    })
+  }
+  
+  # Observer pour détecter le clic sur le bouton d'insertion
+  observeEvent(input$Importer, {
+    # Vérifier si un fichier a été téléchargé
+    if (is.null(input$file1)) {
+      return(NULL)
+    }
+    
+    # Chemin vers le fichier téléchargé
+    chemin_fichier <- input$file1$datapath
+    
+    # ID de la feuille Google Sheets où insérer les données (à remplacer par votre propre ID)
+    id_feuille <- "https://docs.google.com/spreadsheets/d/1jty0iGJY-FLLkEQHKyRe12qRD9MLZzEQd2TXjclGemM/edit#gid=0"
+    
+    # Insérer les données dans Google Sheets
+    inserer_donnees_google_docs(chemin_fichier, id_feuille)
+    
+    # Afficher un message de confirmation
+    output$insertion_message <- renderText("Les données ont été insérées avec succès dans Google Sheets.")
+  })
+    
 }

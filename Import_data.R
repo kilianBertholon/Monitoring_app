@@ -5,7 +5,6 @@
 sheet_range <- "https://docs.google.com/spreadsheets/d/1ykAvHxprWWsUDyPJX5gTMTYV6vPJUm4dX-kc68UgiDw/edit?usp=sharing"
 range_value <- read_sheet(sheet_range)
 
-data_num <- read_sheet(sheet_tidy)
 
 
 data_num$Valeur <- gsub(",", ".", data_num$Valeur)
